@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>My App</title>
+  <meta name="theme-color" content="#0067c0" />
+  <meta name="description" content="A blank PWA starter, installable on Android." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-bar">
+    <h1>My App</h1>
+    <button id="theme-toggle" class="ghost" aria-label="Toggle theme">Theme</button>
+  </header>
+
+  <main class="content">
+    <section class="card">
+      <h2>Hello</h2>
+      <p>This is a blank PWA starter. Delete this and build your own UI in <code>index.html</code> + <code>js/app.js</code>.</p>
+      <p id="status" class="muted">Checking install status...</p>
+      <button id="install-btn" class="primary" hidden>Install app</button>
+    </section>
+
+    <section class="card">
+      <h2>Install on your phone</h2>
+      <p>Scan this QR code with your phone to open the app, then choose <strong>"Add to Home screen"</strong>.</p>
+      <img id="qr" class="qr" alt="QR code linking to this app" />
+      <p class="muted" id="qr-url"></p>
+    </section>
+
+    <section class="card">
+      <h2>Try offline</h2>
+      <p>Everything you build here works offline after the first visit thanks to the service worker.</p>
+    </section>
+  </main>
+
+  <footer class="footer muted">v1.0.0</footer>
+
+  <script src="js/vendor/qrcode.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

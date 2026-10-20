@@ -1,0 +1,114 @@
+:root {
+  --bg: #f3f3f3;
+  --surface: #ffffff;
+  --text: #1b1b1b;
+  --muted: #5f5f5f;
+  --accent: #0067c0;
+  --border: #e2e2e2;
+  --radius: 12px;
+}
+
+:root[data-theme="dark"] {
+  --bg: #1b1b1b;
+  --surface: #2a2a2a;
+  --text: #f3f3f3;
+  --muted: #a0a0a0;
+  --accent: #4aa3ff;
+  --border: #3a3a3a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  padding-top: max(12px, env(safe-area-inset-top));
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+}
+
+.app-bar h1 { font-size: 1.1rem; margin: 0; }
+
+.content {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.card h2 { margin-top: 0; font-size: 1rem; }
+
+code {
+  background: rgba(127, 127, 127, 0.15);
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--text);
+}
+
+.footer {
+  text-align: center;
+  padding: 12px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.qr {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+  margin: 12px auto;
+  border: 8px solid #fff;
+  border-radius: 8px;
+  background: #fff;
+}
