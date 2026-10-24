@@ -108,7 +108,15 @@
       localStorage.setItem('wa-number', input.value.trim());
 
       const url = 'https://api.whatsapp.com/send?phone=' + digits;
-      // Navigate in same tab so it respects the installed app picker
+      // Try to trigger the app chooser; on installed PWAs same-tab is often best
+      try {
+        // Prefer opening in a new context that allows intent/picker
+        const win = window.open(url, '_blank');
+        if (win) {
+          try { win.opener = null; } catch (e) {}
+          return;
+        }
+      } catch (e) {}
       window.location.href = url;
     }
 
