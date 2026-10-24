@@ -113,9 +113,135 @@ button.ghost {
   background: #fff;
 }
 
+/* WhatsApp launcher */
+.wa-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.wa-input {
+  flex: 1 1 220px;
+  min-width: 0;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wa-input::placeholder { color: var(--muted); }
+
+.wa-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(74, 163, 255, 0.25);
+}
+
+.wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: #06331a;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-weight: 600;
+  transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.25);
+}
+
+.wa-btn:hover { filter: brightness(1.05); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35); }
+.wa-btn:active { transform: scale(0.97); }
+
+.wa-icon { display: inline-flex; }
+
+.wa-error {
+  margin: 10px 0 0;
+  color: #ff6b6b;
+  font-size: 0.9rem;
+}
+
+/* Collapsible card */
+.card-heading {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.collapse-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.collapse-toggle:hover { color: var(--accent); }
+
+.chevron {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+}
+
+.collapse-toggle[aria-expanded="true"] .chevron {
+  transform: rotate(45deg);
+}
+
+.collapse-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapse-body.collapsed,
+.collapse-body.is-collapsed {
+  grid-template-rows: 0fr;
+}
+
+.collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.35s ease, transform 0.45s ease;
+}
+
+.collapse-body.collapsed .collapse-inner,
+.collapse-body.is-collapsed .collapse-inner {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
 /* Solar System */
 .solar-card {
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapse-body,
+  .collapse-inner,
+  .chevron {
+    transition: none !important;
+  }
 }
 
 .solar-system-container {

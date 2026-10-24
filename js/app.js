@@ -15,7 +15,7 @@
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/my-app/sw.js', { scope: '/my-app/' }).catch(() => {});
+      navigator.serviceWorker.register('sw.js', { scope: './' }).catch(() => {});
     });
   }
 
@@ -46,6 +46,81 @@
 
   window.addEventListener('online', () => (statusEl.textContent = 'Back online.'));
   window.addEventListener('offline', () => (statusEl.textContent = 'Offline — still works.'));
+
+  setupSolarToggle();
+  setupWhatsApp();
+
+  function setupSolarToggle() {
+    const button = document.getElementById('solar-toggle');
+    const body = document.getElementById('solar-body');
+    if (!button || !body) return;
+
+    function setOpen(open) {
+      button.setAttribute('aria-expanded', String(open));
+      body.classList.toggle('collapsed', !open);
+    }
+
+    // Start collapsed unless JS already rendered it open
+    setOpen(false);
+
+    button.addEventListener('click', () => {
+      setOpen(button.getAttribute('aria-expanded') !== 'true');
+    });
+  }
+
+  function setupWhatsApp() {
+    const input = document.getElementById('wa-number');
+    const button = document.getElementById('wa-open');
+    const errorEl = document.getElementById('wa-error');
+    if (!input || !button) return;
+
+    // Restore last used number
+    const savedNumber = localStorage.getItem('wa-number');
+    if (savedNumber) input.value = savedNumber;
+
+    function showError(message) {
+      errorEl.textContent = message;
+      errorEl.hidden = false;
+      input.setAttribute('aria-invalid', 'true');
+    }
+
+    function clearError() {
+      errorEl.hidden = true;
+      errorEl.textContent = '';
+      input.removeAttribute('aria-invalid');
+    }
+
+    function openWhatsApp() {
+      clearError();
+      const digits = input.value.replace(/\D/g, '');
+
+      if (!digits) {
+        showError('Please enter a phone number.');
+        input.focus();
+        return;
+      }
+      if (digits.length < 7 || digits.length > 15) {
+        showError('Enter a valid number with country code (7-15 digits).');
+        input.focus();
+        return;
+      }
+
+      localStorage.setItem('wa-number', input.value.trim());
+
+      const url = 'https://wa.me/' + digits;
+      const win = window.open(url, '_blank', 'noopener');
+      if (!win) window.location.href = url; // popup blocked fallback
+    }
+
+    button.addEventListener('click', openWhatsApp);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        openWhatsApp();
+      }
+    });
+    input.addEventListener('input', clearError);
+  }
 
   renderQr();
 
