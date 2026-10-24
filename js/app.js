@@ -108,14 +108,20 @@
       localStorage.setItem('wa-number', input.value.trim());
 
       const url = 'https://api.whatsapp.com/send?phone=' + digits;
-      // Try to trigger the app chooser; on installed PWAs same-tab is often best
+      // On installed PWAs, opening in a new tab often shows the app chooser
       try {
-        // Prefer opening in a new context that allows intent/picker
-        const win = window.open(url, '_blank');
-        if (win) {
-          try { win.opener = null; } catch (e) {}
-          return;
-        }
+        const win = window.open(url);
+        if (win) return;
+      } catch (e) {}
+      try {
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
       } catch (e) {}
       window.location.href = url;
     }
