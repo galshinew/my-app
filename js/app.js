@@ -108,8 +108,24 @@
       localStorage.setItem('wa-number', input.value.trim());
 
       const url = 'https://wa.me/' + digits;
-      const win = window.open(url, '_blank', 'noopener');
-      if (!win) window.location.href = url; // popup blocked fallback
+      // Try to open in new tab; fall back to same tab if blocked
+      try {
+        const win = window.open(url, '_blank', 'noopener,noreferrer');
+        if (win) {
+          win.opener = null;
+          return;
+        }
+      } catch (e) {
+        // ignore
+      }
+      // Fallbacks
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
     button.addEventListener('click', openWhatsApp);
