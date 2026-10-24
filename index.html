@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>My App</title>
-  <meta name="theme-color" content="#0067c0" />
-  <meta name="description" content="A blank PWA starter, installable on Android." />
+  <title>Solar System</title>
+  <meta name="theme-color" content="#0b1026" />
+  <meta name="description" content="Interactive animated solar system." />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
@@ -13,14 +13,54 @@
 </head>
 <body>
   <header class="app-bar">
-    <h1>My App</h1>
+    <h1>Solar System</h1>
     <button id="theme-toggle" class="ghost" aria-label="Toggle theme">Theme</button>
   </header>
 
   <main class="content">
+    <section class="card solar-card">
+      <h2>Our Solar System</h2>
+      <p class="muted">Watch the planets orbit the Sun in real-time animation.</p>
+      <div class="solar-system-container">
+        <div class="solar-system">
+          <div class="sun"></div>
+          <div class="orbit mercury-orbit">
+            <div class="planet mercury"></div>
+          </div>
+          <div class="orbit venus-orbit">
+            <div class="planet venus"></div>
+          </div>
+          <div class="orbit earth-orbit">
+            <div class="planet earth">
+              <div class="moon-orbit">
+                <div class="moon"></div>
+              </div>
+            </div>
+          </div>
+          <div class="orbit mars-orbit">
+            <div class="planet mars"></div>
+          </div>
+          <div class="orbit jupiter-orbit">
+            <div class="planet jupiter"></div>
+          </div>
+          <div class="orbit saturn-orbit">
+            <div class="planet saturn">
+              <div class="saturn-ring"></div>
+            </div>
+          </div>
+          <div class="orbit uranus-orbit">
+            <div class="planet uranus"></div>
+          </div>
+          <div class="orbit neptune-orbit">
+            <div class="planet neptune"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="card">
-      <h2>Hello</h2>
-      <p>This is a blank PWA starter. Delete this and build your own UI in <code>index.html</code> + <code>js/app.js</code>.</p>
+      <h2>About</h2>
+      <p>A beautiful animated view of our solar system with realistic orbital speeds.</p>
       <p id="status" class="muted">Checking install status...</p>
       <button id="install-btn" class="primary" hidden>Install app</button>
     </section>
