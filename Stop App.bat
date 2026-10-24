@@ -1,20 +1,25 @@
 @echo off
+setlocal enabledelayedexpansion
 title Stop My App Server
-
 echo Stopping local server on port 8000...
 
-REM Kill only the process LISTENING on port 8000
+set "FOUND="
+set "KILLED="
 for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000" ^| findstr "LISTENING"') do (
-    echo Killing listening process PID: %%a
+  set "FOUND=1"
+  if not "%%a"=="!KILLED!" (
+    set "KILLED=%%a"
+    echo Killing PID %%a
     taskkill /F /T /PID %%a >nul 2>&1
+  )
 )
 
-REM Fallback: kill any python http.server just in case
-taskkill /F /IM python.exe >nul 2>&1
-taskkill /F /IM py.exe >nul 2>&1
+REM Fallback: kill any leftover python http.server process
+powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*http.server*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }" >nul 2>&1
 
-echo.
-echo Done. Any existing browser tabs may still show old connections in TIME_WAIT, 
-echo but no new requests will be accepted anymore.
-echo.
-timeout /t 2 >nul
+if not defined FOUND (
+  echo No server was listening on port 8000.
+) else (
+  echo Server stopped.
+)
+ping -n 2 127.0.0.1 >nul
