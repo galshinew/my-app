@@ -207,28 +207,20 @@ button.ghost {
 }
 
 .collapse-body {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 2000px;
+  overflow: hidden;
+  opacity: 1;
+  transition: max-height 0.5s ease, opacity 0.4s ease;
 }
 
-.collapse-body.collapsed,
-.collapse-body.is-collapsed {
-  grid-template-rows: 0fr;
+.collapse-body.collapsed {
+  max-height: 0 !important;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .collapse-inner {
-  min-height: 0;
-  overflow: hidden;
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 0.35s ease, transform 0.45s ease;
-}
-
-.collapse-body.collapsed .collapse-inner,
-.collapse-body.is-collapsed .collapse-inner {
-  opacity: 0;
-  transform: scale(0.96);
+  padding-top: 4px;
 }
 
 /* Solar System */
@@ -238,7 +230,6 @@ button.ghost {
 
 @media (prefers-reduced-motion: reduce) {
   .collapse-body,
-  .collapse-inner,
   .chevron {
     transition: none !important;
   }
