@@ -108,9 +108,22 @@
       localStorage.setItem('wa-number', input.value.trim());
 
       const url = 'https://api.whatsapp.com/send?phone=' + digits;
-      // On installed PWAs, opening in a new tab often shows the app chooser
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+      if (isStandalone) {
+        // In installed PWA try intent to show chooser on Android; fallback to browser
+        const intentUrl = 'intent://send?phone=' + digits + '#Intent;scheme=whatsapp;package=com.whatsapp;S.browser_fallback_url=' + encodeURIComponent('https://api.whatsapp.com/send?phone=' + digits) + ';end';
+        try {
+          window.location.href = intentUrl;
+          setTimeout(() => {
+            window.location.href = url;
+          }, 1200);
+          return;
+        } catch (e) {}
+      }
+
       try {
-        const win = window.open(url);
+        const win = window.open(url, '_blank');
         if (win) return;
       } catch (e) {}
       try {
