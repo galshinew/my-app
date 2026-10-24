@@ -107,25 +107,9 @@
 
       localStorage.setItem('wa-number', input.value.trim());
 
-      const url = 'https://wa.me/' + digits;
-      // Try to open in new tab; fall back to same tab if blocked
-      try {
-        const win = window.open(url, '_blank', 'noopener,noreferrer');
-        if (win) {
-          win.opener = null;
-          return;
-        }
-      } catch (e) {
-        // ignore
-      }
-      // Fallbacks
-      const a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const url = 'https://api.whatsapp.com/send?phone=' + digits;
+      // Navigate in same tab so it respects the installed app picker
+      window.location.href = url;
     }
 
     button.addEventListener('click', openWhatsApp);
