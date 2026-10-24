@@ -70,7 +70,10 @@
 
     <section class="card">
       <h2>Open WhatsApp</h2>
-      <p class="muted">Enter a phone number with country code (e.g. +972501234567).</p>
+      <p class="muted">Pick which WhatsApp to use or enter a new number.</p>
+
+      <div class="wa-presets" id="wa-presets" aria-label="Saved WhatsApp accounts"></div>
+
       <div class="wa-row">
         <input id="wa-number" class="wa-input" type="tel" inputmode="tel" autocomplete="tel"
                placeholder="+972 50 123 4567" aria-label="Phone number with country code" />
@@ -80,9 +83,23 @@
               <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.39a9.87 9.87 0 0 0 4.72 1.2h.01c5.46 0 9.9-4.44 9.9-9.9S17.5 2 12.04 2zm5.83 14.13c-.25.7-1.45 1.34-2 1.39-.55.05-1.07.25-3.6-.75-3.06-1.2-4.98-4.35-5.13-4.55-.15-.2-1.22-1.62-1.22-3.1s.77-2.2 1.04-2.5c.27-.3.6-.38.8-.38l.57.01c.18 0 .43-.07.67.52.25.6.85 2.08.93 2.23.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.31.4-.45.53-.15.15-.3.32-.13.62.17.3.75 1.23 1.6 1.99 1.1.98 2.02 1.28 2.32 1.43.3.15.47.13.65-.07.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.57.35.07.13.07.75-.18 1.45z"/>
             </svg>
           </span>
-          Open WhatsApp
+          Open
         </button>
       </div>
+
+      <details class="wa-manage">
+        <summary>Manage numbers</summary>
+        <div class="wa-manage-body">
+          <div class="wa-manage-row">
+            <input id="wa-manage-label" class="wa-input" type="text" placeholder="Label (e.g. Personal, Business)" />
+            <input id="wa-manage-number" class="wa-input" type="tel" inputmode="tel" placeholder="+972 50 123 4567" />
+            <button id="wa-manage-add" class="wa-add" type="button">Add</button>
+          </div>
+          <ul id="wa-list" class="wa-list"></ul>
+          <p class="muted small">You can have both regular and Business numbers. Choosing one fills the field above.</p>
+        </div>
+      </details>
+
       <p id="wa-error" class="wa-error" role="alert" hidden></p>
     </section>
 
