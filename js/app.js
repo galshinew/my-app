@@ -78,19 +78,39 @@
     const savedNumber = localStorage.getItem('wa-number');
     if (savedNumber) input.value = savedNumber;
 
-    // Auto-format Israeli numbers: if starts with 0 (and no +), replace leading 0 with +972
-    input.addEventListener('blur', () => {
-      const val = input.value.trim();
-      if (!val) return;
-      if (val.startsWith('+')) return;
-      // If it starts with 00, could be international format - but user says "add no at the box it should take the first 0 out and add +972"
+    function normalizeIsraeliNumber() {
+      let val = input.value.trim();
+      if (!val) return val;
+      // Remove dashes/spaces for normalization
+      val = val.replace(/[-\s()]/g, '');
+      if (val.startsWith('+')) {
+        input.value = val;
+        return input.value;
+      }
+      if (val.startsWith('00')) {
+        // Convert 00 to +
+        val = '+' + val.slice(2);
+        input.value = val;
+        return input.value;
+      }
       if (val.startsWith('0')) {
         const withoutLeadingZero = val.replace(/^0+/, '');
         if (withoutLeadingZero) {
-          input.value = '+972' + withoutLeadingZero;
-          localStorage.setItem('wa-number', input.value.trim());
+          val = '+972' + withoutLeadingZero;
+          input.value = val;
         }
       }
+      return input.value;
+    }
+
+    // Auto-format Israeli numbers: if starts with 0 (and no +), replace leading 0 with +972
+    input.addEventListener('blur', () => {
+      normalizeIsraeliNumber();
+      localStorage.setItem('wa-number', input.value.trim());
+    });
+    input.addEventListener('input', () => {
+      // Remove dashes as user types
+      input.value = input.value.replace(/-/g, '');
     });
 
     function showError(message) {
@@ -107,6 +127,9 @@
 
     function openWhatsApp() {
       clearError();
+      // Normalize before processing
+      normalizeIsraeliNumber();
+      localStorage.setItem('wa-number', input.value.trim());
       const digits = input.value.replace(/\D/g, '');
 
       if (!digits) {
@@ -167,7 +190,7 @@
   // Display app version
   const versionEl = document.getElementById('app-version');
   if (versionEl) {
-    versionEl.textContent = 'v2.0';
+    versionEl.textContent = 'v2.1';
   }
 
   renderQr();
