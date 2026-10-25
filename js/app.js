@@ -71,6 +71,7 @@
   function setupWhatsApp() {
     const input = document.getElementById('wa-number');
     const button = document.getElementById('wa-open');
+    const formatBtn = document.getElementById('wa-format');
     const errorEl = document.getElementById('wa-error');
     if (!input || !button) return;
 
@@ -79,18 +80,22 @@
     if (savedNumber) input.value = savedNumber;
 
     function normalizeIsraeliNumber() {
-      let val = input.value.trim();
+      let val = input.value;
       if (!val) return val;
-      // Remove dashes/spaces/parentheses for normalization
-      val = val.replace(/[-\s()]/g, '');
+      // Remove all non-digit chars except leading +
+      val = val.replace(/[^\d+]/g, '');
+      // Normalize leading plus
+      if (val.indexOf('+') > 0) {
+        val = val.replace(/\+/g, '');
+        val = '+' + val;
+      }
+      if (val.startsWith('++')) val = '+' + val.slice(2);
       if (val.startsWith('+972')) {
-        input.value = '+' + val.replace(/^\++/, '').replace(/^972/, '972'); // keep as +972...
-        // ensure proper format
-        if (!input.value.startsWith('+972')) input.value = '+972' + input.value.replace(/^\+?972/, '');
+        // Keep as is
+        input.value = val;
       } else if (val.startsWith('+')) {
-        input.value = val.replace(/^\++/, '+');
+        input.value = val;
       } else if (val.startsWith('00')) {
-        // Convert 00 to +
         val = '+' + val.slice(2);
         input.value = val;
       } else if (val.startsWith('972')) {
@@ -101,11 +106,19 @@
           val = '+972' + withoutLeadingZero;
           input.value = val;
         }
-      } else if (/^[1-9]\d+$/.test(val)) {
-        // If no country code and no leading 0, assume Israeli and add +972
+      } else if (/^[1-9]\d{6,}$/.test(val)) {
         input.value = '+972' + val;
+      } else {
+        input.value = val;
       }
       return input.value;
+    }
+
+    if (formatBtn) {
+      formatBtn.addEventListener('click', () => {
+        normalizeIsraeliNumber();
+        localStorage.setItem('wa-number', input.value.trim());
+      });
     }
 
     // Auto-format Israeli numbers: if starts with 0 (and no +), replace leading 0 with +972
@@ -114,7 +127,6 @@
       localStorage.setItem('wa-number', input.value.trim());
     });
     input.addEventListener('paste', (e) => {
-      // Let paste happen then normalize
       setTimeout(() => {
         normalizeIsraeliNumber();
         localStorage.setItem('wa-number', input.value.trim());
@@ -202,7 +214,7 @@
   // Display app version
   const versionEl = document.getElementById('app-version');
   if (versionEl) {
-    versionEl.textContent = 'v2.2';
+    versionEl.textContent = 'v2.4';
   }
 
   renderQr();
