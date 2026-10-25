@@ -82,6 +82,8 @@
     function normalizeIsraeliNumber() {
       let val = input.value;
       if (!val) return val;
+      // First remove dashes, spaces, parens
+      val = val.replace(/[-\s()]/g, '');
       // Remove all non-digit chars except leading +
       val = val.replace(/[^\d+]/g, '');
       // Normalize leading plus
@@ -91,7 +93,6 @@
       }
       if (val.startsWith('++')) val = '+' + val.slice(2);
       if (val.startsWith('+972')) {
-        // Keep as is
         input.value = val;
       } else if (val.startsWith('+')) {
         input.value = val;
@@ -105,6 +106,8 @@
         if (withoutLeadingZero) {
           val = '+972' + withoutLeadingZero;
           input.value = val;
+        } else {
+          input.value = val;
         }
       } else if (/^[1-9]\d{6,}$/.test(val)) {
         input.value = '+972' + val;
@@ -115,9 +118,11 @@
     }
 
     if (formatBtn) {
-      formatBtn.addEventListener('click', () => {
+      formatBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         normalizeIsraeliNumber();
         localStorage.setItem('wa-number', input.value.trim());
+        clearError();
       });
     }
 
@@ -214,7 +219,7 @@
   // Display app version
   const versionEl = document.getElementById('app-version');
   if (versionEl) {
-    versionEl.textContent = 'v2.4';
+    versionEl.textContent = 'v2.5';
   }
 
   renderQr();
