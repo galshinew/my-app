@@ -81,24 +81,29 @@
     function normalizeIsraeliNumber() {
       let val = input.value.trim();
       if (!val) return val;
-      // Remove dashes/spaces for normalization
+      // Remove dashes/spaces/parentheses for normalization
       val = val.replace(/[-\s()]/g, '');
-      if (val.startsWith('+')) {
-        input.value = val;
-        return input.value;
-      }
-      if (val.startsWith('00')) {
+      if (val.startsWith('+972')) {
+        input.value = '+' + val.replace(/^\++/, '').replace(/^972/, '972'); // keep as +972...
+        // ensure proper format
+        if (!input.value.startsWith('+972')) input.value = '+972' + input.value.replace(/^\+?972/, '');
+      } else if (val.startsWith('+')) {
+        input.value = val.replace(/^\++/, '+');
+      } else if (val.startsWith('00')) {
         // Convert 00 to +
         val = '+' + val.slice(2);
         input.value = val;
-        return input.value;
-      }
-      if (val.startsWith('0')) {
+      } else if (val.startsWith('972')) {
+        input.value = '+' + val;
+      } else if (val.startsWith('0')) {
         const withoutLeadingZero = val.replace(/^0+/, '');
         if (withoutLeadingZero) {
           val = '+972' + withoutLeadingZero;
           input.value = val;
         }
+      } else if (/^[1-9]\d+$/.test(val)) {
+        // If no country code and no leading 0, assume Israeli and add +972
+        input.value = '+972' + val;
       }
       return input.value;
     }
@@ -107,6 +112,13 @@
     input.addEventListener('blur', () => {
       normalizeIsraeliNumber();
       localStorage.setItem('wa-number', input.value.trim());
+    });
+    input.addEventListener('paste', (e) => {
+      // Let paste happen then normalize
+      setTimeout(() => {
+        normalizeIsraeliNumber();
+        localStorage.setItem('wa-number', input.value.trim());
+      }, 0);
     });
     input.addEventListener('input', () => {
       // Remove dashes as user types
@@ -190,7 +202,7 @@
   // Display app version
   const versionEl = document.getElementById('app-version');
   if (versionEl) {
-    versionEl.textContent = 'v2.1';
+    versionEl.textContent = 'v2.2';
   }
 
   renderQr();
