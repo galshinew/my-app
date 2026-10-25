@@ -167,7 +167,7 @@
   // Display app version
   const versionEl = document.getElementById('app-version');
   if (versionEl) {
-    versionEl.textContent = 'v1.0.1';
+    versionEl.textContent = 'v2.0';
   }
 
   renderQr();
